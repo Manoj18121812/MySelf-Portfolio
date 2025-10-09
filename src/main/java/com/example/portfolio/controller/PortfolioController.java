@@ -52,7 +52,7 @@ public class PortfolioController {
                 Map.of("title","Spring Boot","desc","Java Framework","img","/css/images/springboot.png"),
                 Map.of("title","Hibernate","desc","ORM Framework","img","/css/images/hibernate.png"),
                 Map.of("title","JDBC","desc","Database Connectivity","img","/css/images/jdbc.png"),
-                Map.of("title","Servlet","desc","Web Component","img","/css/images/servlet.png"),
+
                 Map.of("title","Thymeleaf","desc","Template Engine","img","/css/images/thymeleaf.png"),
                 Map.of("title","Bootstrap","desc","Front-End Framework","img","/css/images/bs.png"),
 
