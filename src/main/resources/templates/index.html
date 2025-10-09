@@ -333,10 +333,58 @@
                 <div class="card dark-card p-5" style="background: linear-gradient(145deg, #1f1f1f, #2a2a2a); border-radius: 24px; transition: transform 0.3s;">
 
                     <!-- Name & Title -->
-                    <h1 class="display-4 fw-bold mb-3 text-gradient"
-                        style="background: linear-gradient(90deg, #f1c94a, #ff6f61); -webkit-background-clip: text; color: transparent; letter-spacing: 1px;">
-                        MANOJ GAVHANE
+                    <h1 class="fw-bold mb-3 text-gradient responsive-heading"
+                        style="
+      background: linear-gradient(90deg, #f1c94a, #ff6f61, #f1c94a);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: gradient-move 4s linear infinite;
+      transition: background-position 0.5s ease, transform 0.3s ease;
+      display: inline-block;
+    ">
+                        Mr. Manoj Kanifnath Gavhane
                     </h1>
+
+                    <style>
+                        body {
+                          background-color: #0d0d0d; /* Dark theme */
+                          color: #ddd;
+                          font-family: 'Poppins', sans-serif;
+                        }
+
+                        /* Gradient animation */
+                        @keyframes gradient-move {
+                          0% { background-position: 0% center; }
+                          100% { background-position: 200% center; }
+                        }
+
+                        /* Hover effect: gradient shift + slight scale */
+                        .text-gradient:hover {
+                          background-position: 100% center;
+                          transform: scale(1.05); /* Slight enlarge */
+                        }
+
+                        /* Responsive font sizes */
+                        .responsive-heading {
+                          font-size: 2.2rem; /* Desktop */
+                        }
+
+                        @media (max-width: 992px) {
+                          .responsive-heading {
+                            font-size: 1.9rem; /* Tablet */
+                          }
+                        }
+
+                        @media (max-width: 576px) {
+                          .responsive-heading {
+                            font-size: 1.6rem; /* Mobile */
+                          }
+                        }
+                    </style> make any advance add hover too small small dot are created
                     <!-- Continuous Scrolling Badge with Glow -->
                     <div class="badge-container mb-4">
     <span class="scrolling-badge">
