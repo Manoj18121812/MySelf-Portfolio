@@ -11,6 +11,10 @@
     <!-- Icons (Bootstrap Icons) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- Favicon with gold gradient initials MKG -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdvbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjFjOTRhIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNmZjZmNjEiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmMWM5NGEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIGZpbGw9InVybCgjZ29sZEdyYWQpIiByeD0iNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTUlIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJQb3BwaW5zLCBzYW5zLXNlcmlmIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIj5NS0c8L3RleHQ+PC9zdmc+">
+
+
     <!-- Embedded CSS -->
     <style>
     :root {
@@ -215,10 +219,70 @@
     transform: scale(1.3);
     text-shadow: 0 0 8px #f1c94a, 0 0 12px #ff6f61;
 }
-</style>
+        #particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* stay behind everything */
+  background: transparent;
+  pointer-events: none; /* don’t block clicks */
+}
+
+    </style>
+
 
 </head>
+
 <body class="bg-dark text-light">
+<!-- === Particle Background === -->
+<canvas id="particle-canvas"></canvas>
+
+<script>
+    const canvas = document.getElementById("particle-canvas");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    const numParticles = 80;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.8,
+        dy: (Math.random() - 0.5) * 0.8
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#f1c94a";
+
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        // bounce off edges
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+</script>
 
 <!-- Mobile navbar toggler for sidebar -->
 <nav class="navbar navbar-dark d-lg-none bg-transparent">
@@ -245,10 +309,112 @@
                     </div>
 
                     <!-- Name & Title -->
-                    <h3 th:text="${profile.name}" class="sidebar-name">Manoj Gavhane</h3>
-                    <div class="sidebar-title" th:text="${profile.title}">
-                        Java Full Stack Developer | DevOps Enthusiast
+                    <!-- Sidebar Card with only Name & Title -->
+                    <div class="card sidebar-card text-center p-4">
+
+
+                        <!-- Centered Name & Title -->
+                        <div class="text-center mt-3">
+                            <h3 th:text="${profile.name}" class="sidebar-name">Manoj Gavhane</h3>
+                            <div class="sidebar-title" th:text="${profile.title}">
+                                Java Full Stack Developer | DevOps Enthusiast
+                            </div>
+                        </div>
+
+                        <style>
+                            .text-center {
+                                text-align: center;
+                            }
+
+                            .sidebar-name {
+                                font-size: 1.8rem;
+                                font-weight: 700;
+                                color: #f1c94a;
+                                letter-spacing: 1px;
+                                text-transform: uppercase;
+                                transition: color 0.3s ease, text-shadow 0.3s ease;
+                                margin-bottom: 8px;
+                            }
+
+                            .sidebar-name:hover {
+                                color: #ff8c00;
+                                text-shadow: 0 0 10px rgba(255, 140, 0, 0.7);
+                            }
+
+                            .sidebar-title {
+                                font-size: 1rem;
+                                color: #ccc;
+                                background: rgba(255, 255, 255, 0.05);
+                                padding: 6px 12px;
+                                border-radius: 10px;
+                                display: inline-block;
+                                margin-top: 5px;
+                                transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+                            }
+
+                            .sidebar-title:hover {
+                                background: rgba(255, 140, 0, 0.1);
+                                color: #f1c94a;
+                                box-shadow: 0 0 8px rgba(255, 140, 0, 0.3);
+                            }
+                        </style>
+
                     </div>
+
+                    <style>
+                        .sidebar-card {
+                            background: linear-gradient(180deg, rgba(30,30,30,0.95), rgba(20,20,20,0.9));
+                            border-radius: 24px;
+                            padding: 2rem 1.5rem;
+                            color: #fff;
+                            text-align: center;
+                        }
+
+                        .avatar-wrapper {
+                            position: relative;
+                            display: inline-block;
+                            margin-bottom: 16px;
+                        }
+
+                        .avatar {
+                            width: 140px;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 50%;
+                            border: 4px solid rgba(241, 201, 74, 0.6);
+                            box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+                        }
+
+                        .avatar-glow {
+                            position: absolute;
+                            top: -12px;
+                            left: -12px;
+                            width: 164px;
+                            height: 164px;
+                            border-radius: 50%;
+                            background: radial-gradient(circle, rgba(241,201,74,0.5), transparent 60%);
+                            filter: blur(6px);
+                            z-index: -1;
+                        }
+
+                        .sidebar-name {
+                            font-size: 1.9rem;
+                            font-weight: 700;
+                            margin: 12px 0 6px;
+                        }
+
+                        .sidebar-title {
+                            display: inline-block;
+                            background: linear-gradient(135deg, #f1c94a, #ff6f61);
+                            color: #1f1f1f;
+                            font-size: 0.95rem;
+                            font-weight: 600;
+                            padding: 6px 16px;
+                            border-radius: 20px;
+                            text-align: center;
+                        }
+                    </style>
+
 
                     <hr class="sidebar-divider">
 
@@ -272,25 +438,160 @@
                         </div>
                     </div>
 
+                    <style>
+                        /* Summary Section Hover Effect */
+#summary {
+    position: relative;
+    background-color: #111;
+    border-radius: 10px;
+    padding: 40px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Slight lift and glow on hover */
+#summary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(241, 201, 74, 0.4);
+    background: linear-gradient(145deg, #111, #1a1a1a);
+}
+
+/* Optional: Highlight the section header gradient on hover */
+#summary:hover .text-gradient-header {
+    background: linear-gradient(90deg, #ff6f61, #f1c94a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Optional: Divider glow on hover */
+#summary:hover div[style*="height: 2px"] {
+    background: linear-gradient(90deg, transparent, #ff6f61, transparent);
+}
+/* Summary section text */
+#summary .summary-text p {
+    color: #ddd;
+    transition: color 0.3s ease;
+}
+
+/* Change text color on hover of the whole section */
+#summary:hover .summary-text p {
+    color: #f1c94a; /* gold color on hover */
+}
+
+                        .sidebar-contact {
+                            margin-top: 25px;
+                            padding: 15px;
+                            border-radius: 12px;
+                            background: rgba(255, 255, 255, 0.05);
+                            width: 85%;
+                            margin-left: auto;
+                            margin-right: auto;
+                            text-align: left;
+                            box-shadow: 0 0 10px rgba(255, 140, 0, 0.1);
+                            transition: box-shadow 0.3s ease;
+                        }
+
+                        .sidebar-contact:hover {
+                            box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
+                        }
+
+                        .contact-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            color: #ccc;
+                            font-size: 0.95rem;
+                            margin-bottom: 10px;
+                            transition: color 0.3s ease, transform 0.3s ease;
+                        }
+
+                        .contact-item:hover {
+                            color: #f1c94a;
+                            transform: translateX(5px);
+                        }
+
+                        .contact-item i {
+                            color: #f1c94a;
+                            font-size: 1.1rem;
+                            transition: color 0.3s ease, transform 0.3s ease;
+                        }
+
+                        .contact-item:hover i {
+                            color: #ff8c00;
+                            transform: scale(1.1);
+                        }
+
+                        .contact-item span {
+                            word-break: break-word;
+                        }
+                    </style>
+
+
                     <hr class="sidebar-divider">
 
                     <!-- Links -->
                     <div class="sidebar-links">
                         <a href="#about"><i class="bi bi-person-circle"></i> About</a>
-                        <a href="#resume"><i class="bi bi-file-earmark-text"></i> Resume</a>
-                        <a href="#portfolio"><i class="bi bi-layers"></i> Portfolio</a>
-                        <a href="#cv"><i class="bi bi-file-text"></i> CV</a>
+                        <a th:href="@{/resume}"><i class="bi bi-file-earmark-text"></i> Resume</a>
+                        <a th:href="@{/portfolio}"><i class="bi bi-briefcase"></i> Portfolio</a>
+                        <a href="/css/files/manojcv.pdf" target="_blank"><i class="bi bi-file-text"></i> CV</a>
                     </div>
+
+                    <style>
+                        .sidebar-links {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            margin-top: 25px;
+                            gap: 12px;
+                        }
+
+                        .sidebar-links a {
+                            color: #ccc;
+                            text-decoration: none;
+                            font-size: 1rem;
+                            letter-spacing: 0.5px;
+                            padding: 10px 20px;
+                            border-radius: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            transition: all 0.3s ease;
+                            background: rgba(255, 255, 255, 0.05);
+                            width: 80%;
+                            justify-content: center;
+                        }
+
+                        .sidebar-links a:hover {
+                            color: #f1c94a;
+                            background: rgba(255, 140, 0, 0.15);
+                            box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+                            transform: translateY(-2px);
+                        }
+
+                        .sidebar-links i {
+                            font-size: 1.1rem;
+                            color: #f1c94a;
+                            transition: transform 0.3s ease, color 0.3s ease;
+                        }
+
+                        .sidebar-links a:hover i {
+                            color: #ff8c00;
+                            transform: rotate(8deg) scale(1.1);
+                        }
+
+                    </style>
+
 
                     <hr class="sidebar-divider">
 
                     <!-- Social Icons -->
                     <div class="social-icons">
-                        <a href="https://github.com/username" target="_blank"><i class="bi bi-github"></i></a>
-                        <a href="https://linkedin.com/in/username" target="_blank"><i class="bi bi-linkedin"></i></a>
-                        <a href="https://instagram.com/username" target="_blank"><i class="bi bi-instagram"></i></a>
-                        <a href="https://wa.me/1234567890" target="_blank"><i class="bi bi-whatsapp"></i></a>
-                        <a href="mailto:email@example.com" target="_blank"><i class="bi bi-envelope"></i></a>
+                        <a href="https://github.com/manoj18121812" target="_blank"><i class="bi bi-github"></i></a>
+                        <a href="https://www.linkedin.com/in/manoj-gavhane-855b4b224/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://instagram.com/manoj_gavhane_1812" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/8378863043" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                        <a href="mailto:manojkgavhane@gmail.com" target="_blank"><i class="bi bi-envelope"></i></a>
+                        <a href="https://leetcode.com/u/MANOJ1812/" target="_blank"><i class="bi bi-file-code"></i></a>
                     </div>
                 </div>
             </div>
@@ -308,19 +609,9 @@
                         <h4 th:text="${profile.name}">Name</h4>
                         <div class="badge bg-secondary my-2" th:text="${profile.title}">Title</div>
                         <hr class="opacity-25">
-                        <div class="small text-start mb-3">
-                            <div class="mb-2 d-flex align-items-center"><i class="bi bi-envelope-fill me-2 text-accent"></i><span th:text="${profile.email}">email@example.com</span></div>
-                            <div class="mb-2 d-flex align-items-center"><i class="bi bi-telephone-fill me-2 text-accent"></i><span th:text="${profile.phone}">+91 1234567890</span></div>
-                            <div class="mb-2 d-flex align-items-center"><i class="bi bi-calendar-fill me-2 text-accent"></i><span th:text="${profile.birthday}">Jan 1, 1990</span></div>
-                            <div class="mb-2 d-flex align-items-center"><i class="bi bi-geo-alt-fill me-2 text-accent"></i><span th:text="${profile.location}">Pune, India</span></div>
-                        </div>
 
-                        <!-- Social Icons -->
-                        <div class="social-icons mt-2">
-                            <a href="https://github.com/username" target="_blank"><i class="bi bi-github"></i></a>
-                            <a href="https://linkedin.com/in/username" target="_blank"><i class="bi bi-linkedin"></i></a>
-                            <a href="https://twitter.com/username" target="_blank"><i class="bi bi-twitter"></i></a>
-                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -328,231 +619,414 @@
 
         <!-- Main content -->
         <div class="col-lg-9">
-            <!-- About Me Section -->
-            <section class="mb-5">
-                <div class="card dark-card p-5" style="background: linear-gradient(145deg, #1f1f1f, #2a2a2a); border-radius: 24px; transition: transform 0.3s;">
+            <section id="about" class="right-content-section">
+                <!-- About Me Section -->
+                <section class="mb-5 about-section" style="position: relative; overflow: hidden;">
+                    <!-- Particle Canvas (Background) -->
+                    <canvas id="about-particles"></canvas>
 
-                    <!-- Name & Title -->
-                    <h1 class="fw-bold mb-3 text-gradient responsive-heading"
-                        style="
-      background: linear-gradient(90deg, #f1c94a, #ff6f61, #f1c94a);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      animation: gradient-move 4s linear infinite;
-      transition: background-position 0.5s ease, transform 0.3s ease;
-      display: inline-block;
-    ">
-                        Mr. Manoj Kanifnath Gavhane
-                    </h1>
+                    <div class="card dark-card p-5"
+                         style="background: linear-gradient(145deg, #1f1f1f, #2a2a2a); border-radius: 24px; transition: transform 0.3s; position: relative; z-index: 1;">
 
-                    <style>
-                        body {
-                          background-color: #0d0d0d; /* Dark theme */
-                          color: #ddd;
-                          font-family: 'Poppins', sans-serif;
-                        }
+                        <!-- Centered Name & Title -->
+                        <div class="text-center my-4">
+                            <h1 class="fw-bold mb-3 text-gradient sexy-heading">
+                                Mr. Manoj Kanifnath Gavhane
+                            </h1>
+                        </div>
 
-                        /* Gradient animation */
-                        @keyframes gradient-move {
-                          0% { background-position: 0% center; }
-                          100% { background-position: 200% center; }
-                        }
+                        <style>
+                            /* Sexy Gradient Heading */
+                            .sexy-heading {
+                                background: linear-gradient(90deg, #f1c94a, #ff6f61, #f1c94a, #ff6f61);
+                                background-size: 300% 100%;
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                color: transparent;
+                                letter-spacing: 2px;
+                                text-transform: uppercase;
+                                display: inline-block;
+                                font-size: 3rem;
+                                font-weight: 900;
+                                transition: transform 0.3s ease, filter 0.3s ease, text-shadow 0.3s ease, background-position 0.5s ease;
+                                animation: gradientMove 6s linear infinite;
+                            }
 
-                        /* Hover effect: gradient shift + slight scale */
-                        .text-gradient:hover {
-                          background-position: 100% center;
-                          transform: scale(1.05); /* Slight enlarge */
-                        }
+                            /* Gradient animation */
+                            @keyframes gradientMove {
+                                0% { background-position: 0% 50%; }
+                                50% { background-position: 100% 50%; }
+                                100% { background-position: 0% 50%; }
+                            }
 
-                        /* Responsive font sizes */
-                        .responsive-heading {
-                          font-size: 2.2rem; /* Desktop */
-                        }
+                            /* Hover effect: scale + glow + gradient shift */
+                            .sexy-heading:hover {
+                                transform: scale(1.08) rotateZ(1deg);
+                                text-shadow: 0 0 20px rgba(241, 201, 74, 0.8),
+                                             0 0 40px rgba(255, 111, 97, 0.7);
+                                filter: brightness(1.3);
+                                background-position: 100% 50%;
+                            }
+                        </style>
 
-                        @media (max-width: 992px) {
-                          .responsive-heading {
-                            font-size: 1.9rem; /* Tablet */
-                          }
-                        }
 
-                        @media (max-width: 576px) {
-                          .responsive-heading {
-                            font-size: 1.6rem; /* Mobile */
-                          }
-                        }
-                    </style> make any advance add hover too small small dot are created
-                    <!-- Continuous Scrolling Badge with Glow -->
-                    <div class="badge-container mb-4">
-    <span class="scrolling-badge">
-        Full Stack Developer | DevOps Enthusiast
-    </span>
+                        <!-- Continuous Scrolling Badge -->
+                        <div class="badge-container mb-4">
+            <span class="scrolling-badge">
+                Full Stack Developer | DevOps Enthusiast
+            </span>
+                        </div>
+
+                        <hr class="opacity-25 my-4">
+
+                        <!-- Summary Section -->
+                        <section id="summary" class="container py-5"
+                                 style="max-width: 900px; margin: 0 auto; background-color: #111; border-radius: 10px; padding: 40px;">
+                            <div class="text-center mb-4">
+                                <div class="d-flex justify-content-center align-items-center mb-2">
+                                    <i class="bi bi-card-text me-2" style="font-size: 1.5rem; color: #f1c94a;"></i>
+                                    <h4 class="mb-0 fw-bold text-gradient-header"
+                                        style="background: linear-gradient(90deg, #f1c94a, #ff6f61);
+                               -webkit-background-clip: text;
+                               -webkit-text-fill-color: transparent;
+                               letter-spacing: 1px;
+                               text-transform: uppercase;">
+                                        SUMMARY
+                                    </h4>
+                                </div>
+                                <div style="height: 2px; width: 100px; margin: 0 auto;
+                            background: linear-gradient(90deg, transparent, #f1c94a, transparent);
+                            border-radius: 2px;"></div>
+                            </div>
+
+                            <div class="summary-text text-center" style="color: #ddd; line-height: 1.8; font-size: 1rem;">
+                                <p>I’m <strong>Manoj Gavhane</strong>, a <strong>Full Stack Developer & DevOps Enthusiast</strong> from <strong>Pune, India</strong>.
+                                    I’m passionate about developing scalable, responsive, and user-friendly web applications using technologies like
+                                    <strong>Java, Spring Boot, React, Thymeleaf,</strong> and <strong>MySQL</strong>.
+                                </p>
+                                <p>As a dedicated Full Stack Developer, I have hands-on experience in both frontend and backend technologies,
+                                    working across the complete development lifecycle — from design and coding to deployment and maintenance.
+                                    I enjoy solving complex problems through clean code, efficient architecture, and automation.</p>
+                                <p>I’ve built several real-world projects, including a <strong>Student Result Portal</strong> and an <strong>Online Job Portal</strong>,
+                                    featuring role-based authentication, PDF export, email notifications, and API-driven functionalities.
+                                    Along with development, I’ve gained practical exposure to DevOps tools such as
+                                    <strong>Docker, Jenkins, GitHub Actions,</strong> and <strong>AWS EC2</strong> for deployment and CI/CD pipeline automation.</p>
+                                <p>I’m always eager to learn new technologies, explore modern development practices, and contribute to building innovative,
+                                    high-performance applications that create real value for users.</p>
+                            </div>
+
+                            <div class="my-4" style="height: 2px; background: linear-gradient(90deg, transparent, #f1c94a, transparent); border-radius: 2px;"></div>
+                        </section>
                     </div>
 
+                    <!-- Particle Script -->
+                    <script>
+                        const aboutCanvas = document.getElementById("about-particles");
+                        const aboutCtx = aboutCanvas.getContext("2d");
+                        const particles = [];
+                        const totalParticles = 60;
+
+                        function resizeAboutCanvas() {
+                            aboutCanvas.width = document.querySelector('.about-section').offsetWidth;
+                            aboutCanvas.height = document.querySelector('.about-section').offsetHeight;
+                        }
+                        window.addEventListener("resize", resizeAboutCanvas);
+                        resizeAboutCanvas();
+
+                        class Particle {
+                            constructor() {
+                                this.x = Math.random() * aboutCanvas.width;
+                                this.y = Math.random() * aboutCanvas.height;
+                                this.size = Math.random() * 2 + 1;
+                                this.speedX = (Math.random() - 0.5) * 0.5;
+                                this.speedY = (Math.random() - 0.5) * 0.5;
+                            }
+                            update() {
+                                this.x += this.speedX;
+                                this.y += this.speedY;
+                                if (this.x < 0 || this.x > aboutCanvas.width) this.speedX *= -1;
+                                if (this.y < 0 || this.y > aboutCanvas.height) this.speedY *= -1;
+                            }
+                            draw() {
+                                aboutCtx.fillStyle = 'rgba(241,201,74,0.7)';
+                                aboutCtx.beginPath();
+                                aboutCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                                aboutCtx.fill();
+                            }
+                        }
+
+                        function initAboutParticles() {
+                            for (let i = 0; i < totalParticles; i++) {
+                                particles.push(new Particle());
+                            }
+                        }
+
+                        function animateAboutParticles() {
+                            aboutCtx.clearRect(0, 0, aboutCanvas.width, aboutCanvas.height);
+                            particles.forEach(p => {
+                                p.update();
+                                p.draw();
+                            });
+                            requestAnimationFrame(animateAboutParticles);
+                        }
+
+                        initAboutParticles();
+                        animateAboutParticles();
+                    </script>
+
                     <style>
+                        .about-section #about-particles {
+                            position: absolute;
+                            top: 0; left: 0;
+                            width: 100%; height: 100%;
+                            z-index: 0;
+                            background: transparent;
+                            pointer-events: none;
+                        }
+
+                        /* Badge Scroll */
                         .badge-container {
                             overflow: hidden;
-                            width: 100%;
                             border-radius: 20px;
                             background: linear-gradient(90deg, #f1c94a, #ff6f61);
                             padding: 0.6rem 1rem;
-                            position: relative;
-                            display: flex;
-                            align-items: center;
                             height: 40px;
                         }
 
                         .scrolling-badge {
                             display: inline-block;
                             white-space: nowrap;
-                            color: #1f1f1f; /* black text */
+                            color: #1f1f1f;
                             font-size: 1.1rem;
                             font-weight: 500;
                             text-shadow: 0 0 4px rgba(255,255,255,0.3), 0 0 6px rgba(241,201,74,0.4);
-                            animation: scrollText 10s linear infinite;
+                            animation: scrollText 25s linear infinite;
                         }
 
                         @keyframes scrollText {
-                            0% {
-                                transform: translateX(100%);
-                            }
-                            100% {
-                                transform: translateX(-100%);
-                            }
+                            0% { transform: translateX(100%); }
+                            100% { transform: translateX(-100%); }
+                        }
+
+                        .text-gradient-header {
+                            background-size: 200% auto;
+                            animation: gradient-move 4s linear infinite;
+                        }
+
+                        @keyframes gradient-move {
+                            0% { background-position: 0% center; }
+                            100% { background-position: 200% center; }
+                        }
+
+                        .summary-paragraph:hover {
+                            transform: translateX(5px);
+                            color: #f1c94a;
                         }
                     </style>
+                </section>
 
 
-                    <hr class="opacity-25 my-4">
-
-                    <!-- Summary Header with Icon -->
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-card-text me-2 text-accent" style="font-size: 1.3rem; color: #f1c94a;"></i>
-                        <h4 class="mb-0" style="letter-spacing: 0.5px; font-weight: 600; color: #f1c94a;">SUMMARY</h4>
-                    </div>
-
-                    <!-- Summary Text -->
-                    <ul class="summary-list" style="padding-left: 0; list-style: none;">
-                        <li class="summary-item mb-2">
-                            <i class="bi bi-check-circle-fill me-2 summary-icon"></i>
-                            Full Stack Developer and DevOps Enthusiast with expertise in creating dynamic and responsive applications.
-                        </li>
-                        <li class="summary-item mb-2">
-                            <i class="bi bi-check-circle-fill me-2 summary-icon"></i>
-                            Skilled in both frontend and backend technologies, focusing on delivering high-quality, user-friendly solutions.
-                        </li>
-                        <li class="summary-item mb-2">
-                            <i class="bi bi-check-circle-fill me-2 summary-icon"></i>
-                            Passionate about staying current with emerging technologies and DevOps practices to drive innovation in web development and deployment.
-                        </li>
-                    </ul>
-
-                    <!-- Decorative Separator -->
-                    <div class="my-4" style="height: 2px; background: linear-gradient(90deg, transparent, #f1c94a, transparent); border-radius: 2px;"></div>
-
-                </div>
-            </section>
-
-            <!-- Tools / Technology Cards -->
+                <!-- Tools / Technology Cards -->
             <section class="mb-5">
-                <h3 class="mb-4" style="letter-spacing: 0.5px; font-weight: 600; color: #f1c94a;">Tools & Technology Exposure</h3>
+                <h3 class="mb-4 text-gradient-header" style="letter-spacing: 0.5px; font-weight: 600; font-size: 1.8rem;">Tools & Technology Exposure</h3>
                 <div class="row g-4">
                     <div class="col-md-6 col-xl-4" th:each="tool : ${tools}">
-                        <div class="card dark-card p-3 h-100 tool-card">
+                        <div class="tool-card h-100 p-4">
                             <div class="d-flex align-items-center">
-                                <div class="me-3 position-relative tool-wrapper">
+                                <div class="position-relative me-3">
                                     <div class="tool-glow"></div>
                                     <img th:src="@{${tool.img}}" alt="tool" class="tool-icon floating-tool">
                                 </div>
                                 <div>
-                                    <h5 th:text="${tool.title}" style="font-weight: 600; margin-bottom: 4px; color: #fff;">Tool</h5>
-                                    <p class="small mb-0 text-muted" th:text="${tool.desc}">Description</p>
+                                    <h5 th:text="${tool.title}" class="tool-title">Tool Name</h5>
+                                    <p class="small tool-desc" th:text="${tool.desc}">Description</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+                <!-- ===== Connect With Me Card ===== -->
+                <section class="mb-5" style="display: flex; justify-content: flex-end; align-items: center; min-height: 400px;">
+                    <div style="max-width: 500px; width: 100%;">
+                        <div class="card p-4"
+                             style="background: linear-gradient(145deg,#1f1f1f,#2a2a2a);
+                    border-radius:20px;
+                    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+                    position: relative; overflow: hidden;">
 
-            <style>
-                /* Tool Card Styling */
+                            <!-- Centered Heading inside Card -->
+                            <h3 style="text-align: center; letter-spacing: 0.5px; font-weight: 600; font-size: 1.8rem;
+                       background: linear-gradient(90deg,#ff9a3c,#ffd200);
+                       -webkit-background-clip: text; color: transparent; margin-bottom: 30px;">
+                                Connect With Me
+                            </h3>
+
+                            <!-- Contact Form -->
+                            <form th:action="@{/sendEmail}" method="post" class="row g-3">
+                                <div class="col-12">
+                                    <label for="name" class="form-label text-white">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required
+                                           style="border-radius:10px; border:none; background:#2b2b2b; color:#fff;
+                                  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);">
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label text-white">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required
+                                           style="border-radius:10px; border:none; background:#2b2b2b; color:#fff;
+                                  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);">
+                                </div>
+                                <div class="col-12">
+                                    <label for="mobile" class="form-label text-white">Mobile No</label>
+                                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Your Mobile No" required
+                                           style="border-radius:10px; border:none; background:#2b2b2b; color:#fff;
+                                  box-shadow: inset 0 0 8px rgba(0,0,0,0.2);">
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn px-4"
+                                            style="background: linear-gradient(90deg,#ff9a3c,#ffd200);
+                                   color:#1a1a1a; font-weight:600; border-radius:12px;
+                                   box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+                                   transition: transform 0.3s, box-shadow 0.3s;">
+                                        Send Email
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <style>
+                /* Gradient Header Animation */
+                .text-gradient-header {
+                    background: linear-gradient(90deg, #f1c94a, #ff6f61, #f1c94a);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-size: 200% auto;
+                    animation: gradient-move 4s linear infinite;
+                }
+                @keyframes gradient-move {
+                    0% { background-position: 0% center; }
+                    100% { background-position: 200% center; }
+                }
+
+                /* Tool Card */
                 .tool-card {
-                    border-radius: 16px;
                     background: linear-gradient(145deg, #1f1f1f, #2a2a2a);
-                    transition: transform 0.3s, box-shadow 0.3s;
+                    border-radius: 20px;
+                    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+                    transition: transform 0.5s ease, box-shadow 0.5s ease;
+                    position: relative;
+                    overflow: hidden;
+                    cursor: pointer;
                 }
                 .tool-card:hover {
-                    transform: translateY(-6px);
-                    box-shadow: 0 12px 24px rgba(241,201,74,0.4);
+                    transform: translateY(-12px) rotateX(3deg) rotateY(3deg);
+                    box-shadow: 0 20px 40px rgba(241,201,74,0.5), 0 0 25px rgba(255,111,97,0.3);
+                    animation: cardBounce 0.6s ease;
+                }
+
+                /* Card Bounce Animation */
+                @keyframes cardBounce {
+                    0% { transform: translateY(-12px) rotateX(3deg) rotateY(3deg); }
+                    50% { transform: translateY(-15px) rotateX(4deg) rotateY(4deg); }
+                    100% { transform: translateY(-12px) rotateX(3deg) rotateY(3deg); }
                 }
 
                 /* Tool Icon */
                 .tool-icon {
-                    width: 60px;
-                    height: 60px;
+                    width: 70px;
+                    height: 70px;
                     object-fit: contain;
-                    border-radius: 12px;
+                    border-radius: 14px;
                     position: relative;
                     z-index: 2;
-                    transition: transform 0.3s;
+                    transition: transform 0.3s ease;
                 }
-
-                /* Floating Animation */
-                .floating-tool {
-                    animation: floatUpDown 3s ease-in-out infinite alternate;
-                }
-
                 .tool-icon:hover {
-                    transform: scale(1.1);
+                    transform: scale(1.25) rotate(5deg);
                 }
 
-                /* Glow Effect with Animation */
+                /* Glow behind tool */
                 .tool-glow {
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    width: 70px;
-                    height: 70px;
+                    width: 80px;
+                    height: 80px;
                     transform: translate(-50%, -50%);
                     border-radius: 50%;
                     background: radial-gradient(circle, rgba(241,201,74,0.3), transparent 70%);
+                    filter: blur(8px);
                     z-index: 1;
-                    animation: pulseGlow 2.5s infinite ease-in-out;
+                    animation: pulseGlow 3s infinite ease-in-out;
                 }
-
                 .tool-card:hover .tool-glow {
                     animation: pulseGlowHover 2s infinite ease-in-out;
                 }
 
-                /* Keyframes for Glow */
-                @keyframes pulseGlow {
-                    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
-                    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
-                    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+                /* Floating Animation for Icon */
+                .floating-tool {
+                    animation: floatUpDown 4s ease-in-out infinite alternate;
+                }
+                @keyframes floatUpDown {
+                    0% { transform: translateY(0); }
+                    50% { transform: translateY(-10px); }
+                    100% { transform: translateY(0); }
                 }
 
+                /* Glow Pulse Keyframes */
+                @keyframes pulseGlow {
+                    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+                    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
+                    100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+                }
                 @keyframes pulseGlowHover {
                     0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-                    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+                    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
                     100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
                 }
 
-                /* Floating Animation for Tool Icon */
-                @keyframes floatUpDown {
-                    0% { transform: translateY(0); }
-                    50% { transform: translateY(-6px); }
-                    100% { transform: translateY(0); }
+                /* Tool Text */
+                .tool-title {
+                    font-weight: 600;
+                    color: #fff;
+                    margin-bottom: 4px;
+                    transition: text-shadow 0.3s;
                 }
-            </style>
+                .tool-card:hover .tool-title {
+                    text-shadow: 0 0 8px rgba(241,201,74,0.7), 0 0 12px rgba(255,111,97,0.5);
+                }
+                .tool-desc {
+                    font-size: 0.85rem;
+                    color: #ccc;
+                    transition: color 0.3s;
+                }
+                .tool-card:hover .tool-desc {
+                    color: #f1c94a;
+                }
 
+                /* Responsive */
+                @media (max-width: 576px) {
+                    .tool-icon { width: 60px; height: 60px; }
+                }
+                    /* ===== Footer ===== */
+        footer { text-align:center; padding:2rem; font-size:0.9rem; color:#777; background:#111; position: relative; z-index:1; }
+
+                </style>
+
+
+        </section>
         </div>
         <!-- /main col -->
 
     </div><!-- /row -->
 </div><!-- /container -->
+<footer>
+    &copy; 2025 Manoj Gavhane. All rights reserved.
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
