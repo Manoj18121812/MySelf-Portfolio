@@ -492,26 +492,18 @@
                         <hr class="opacity-25 my-4">
 
                         <!-- Summary Section -->
-                        <section id="summary" class="container py-5"
-                                 style="max-width: 900px; margin: 0 auto; background-color: #111; border-radius: 10px; padding: 40px;">
+                        <section id="summary" class="container py-5">
                             <div class="text-center mb-4">
                                 <div class="d-flex justify-content-center align-items-center mb-2">
                                     <i class="bi bi-card-text me-2" style="font-size: 1.5rem; color: #f1c94a;"></i>
-                                    <h4 class="mb-0 fw-bold text-gradient-header"
-                                        style="background: linear-gradient(90deg, #f1c94a, #ff6f61);
-                               -webkit-background-clip: text;
-                               -webkit-text-fill-color: transparent;
-                               letter-spacing: 1px;
-                               text-transform: uppercase;">
+                                    <h4 class="mb-0 fw-bold text-gradient-header">
                                         SUMMARY
                                     </h4>
                                 </div>
-                                <div style="height: 2px; width: 100px; margin: 0 auto;
-                            background: linear-gradient(90deg, transparent, #f1c94a, transparent);
-                            border-radius: 2px;"></div>
+                                <div class="mx-auto summary-divider"></div>
                             </div>
 
-                            <div class="summary-text text-center" style="color: #ddd; line-height: 1.8; font-size: 1rem;">
+                            <div class="summary-text text-center px-3 px-md-0">
                                 <p>I’m <strong>Manoj Gavhane</strong>, a <strong>Full Stack Developer & DevOps Enthusiast</strong> from <strong>Pune, India</strong>.
                                     I’m passionate about developing scalable, responsive, and user-friendly web applications using technologies like
                                     <strong>Java, Spring Boot, React, Thymeleaf,</strong> and <strong>MySQL</strong>.
@@ -527,11 +519,83 @@
                                     high-performance applications that create real value for users.</p>
                             </div>
 
-                            <div class="my-4" style="height: 2px; background: linear-gradient(90deg, transparent, #f1c94a, transparent); border-radius: 2px;"></div>
+                            <div class="my-4 mx-auto summary-divider"></div>
                         </section>
-                    </div>
 
-                    <!-- Particle Script -->
+                        <style>
+                            /* Container styling */
+                            #summary {
+                                max-width: 900px;
+                                margin: 0 auto;
+                                background-color: #111;
+                                border-radius: 10px;
+                                padding: 40px 20px;
+                                transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+                            }
+
+                            /* Lift and glow on hover */
+                            #summary:hover {
+                                transform: translateY(-5px);
+                                box-shadow: 0 10px 30px rgba(241, 201, 74, 0.4);
+                                background: linear-gradient(145deg, #111, #1a1a1a);
+                            }
+
+                            /* Gradient header text (static, no hover change) */
+                            .text-gradient-header {
+                                background: linear-gradient(90deg, #f1c94a, #ff6f61);
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                letter-spacing: 1px;
+                                text-transform: uppercase;
+                            }
+
+                            /* Summary text styling */
+                            .summary-text {
+                                color: #ddd;
+                                line-height: 1.8;
+                                font-size: 1rem;
+                                transition: color 0.3s ease;
+                            }
+
+                            /* Text color on hover */
+                            #summary:hover .summary-text {
+                                color: #f1c94a;
+                            }
+
+                            /* Divider styling */
+                            .summary-divider {
+                                height: 2px;
+                                max-width: 900px;
+                                width: 100px;
+                                margin: 0 auto;
+                                background: linear-gradient(90deg, transparent, #f1c94a, transparent);
+                                border-radius: 2px;
+                                transition: background 0.3s ease;
+                            }
+
+                            /* Divider glow on hover */
+                            #summary:hover .summary-divider {
+                                background: linear-gradient(90deg, transparent, #ff8c00, transparent);
+                            }
+
+                            /* Responsive adjustments */
+                            @media (max-width: 576px) {
+                                #summary {
+                                    padding: 20px 15px;
+                                }
+
+                                .summary-text {
+                                    font-size: 0.95rem;
+                                }
+
+                                .text-gradient-header {
+                                    font-size: 1.2rem;
+                                }
+                            }
+                        </style>
+
+
+                        <!-- Particle Script -->
                     <script>
                         const aboutCanvas = document.getElementById("about-particles");
                         const aboutCtx = aboutCanvas.getContext("2d");
