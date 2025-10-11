@@ -17,7 +17,7 @@ public class PortfolioController {
                 "name", "Manoj Gavhane",
                 "title", "Java Full Stack Developer | DevOps Enthusiast",
                 "email", "manojkgavhane@gmail.com",
-                "phone", "+91 8378863043",
+                "phone", "+918378863043",
                 "birthday", "Sep 18, 2003",
                 "location", "Pune, Maharashtra, India",
                 "avatar", "/css/images/mg1.jpg" // put avatar.jpg in static/images
